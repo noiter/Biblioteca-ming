@@ -9,3 +9,37 @@ A customer should be able to reserve a book for collection.
 A customer should be notified if their selected book was reserved successfully with “Thank You! Enjoy the book.”
 A customer should be notified if their selected book is not available with “Sorry we don't have that book yet.”
 A customer should be able to check their library number and be notified with “Please talk to Librarian. Thank you.”
+
+
+Requirement 1
+1.  As a user of the application, I would like to be able to open the application, be presented with a new menu item
+  which will let me view the movie name, director and its rating.
+  (have an menu item that can present movies)
+2.  The library will have 15 movies, which are pre-rated for popularity. People who use the application need the ability
+  to list the movie names and the ratings. We only need to see the movie name, the director and the rating.
+  (have the ability to list the movie names and ratings)
+3.  The rating needs to be on a 1 – 10 scale, but can be represented visually however you want. We don’t need to worry
+  about how the pre-rating happened.
+  ()
+4.  Some movies might be very new and may not have a pre-rating. In this case, show the movie name and explicitly show
+  the user that this movie is not rated. This is equivalent to ‘N/A’. So the user should see this:
+                               Movie name  Director  Rating
+                              SholayRamesh   Sippy    N/A
+
+Requirement 2
+The following requirements would be nice to have:
+There will be multiple people accessing this movie library. They will all be users of the application.
+•	They will need to have a login username and password
+•	The user list is pre-defined. Registration of new users is not required
+•	If someone forgets a password, we do not have the ability to reset password. This may be a future requirement.
+•	A user must enter a correct username and password to log in
+•	There is no specific requirement for the password (letters, numbers etc)
+The login/username will be the user’s library number. The library number format is: xxx-xxxx where x is a number
+starting at 111-1111 (and incrementing by 1 for each subsequent user).
+The part of the system that reported library number before (“Please talk to your Librarian”) will now report your
+library number. If you are not logged in, it will say “Please talk to Librarian” (same as it does now).
+You can decide which user will be the librarian. The librarian will be identified by the library number 111-1111.
+Login rules
+The user will NOT need to login for the existing book library functionality and to view movie list. All other operation
+ from now on will need the user to be logged in.
+

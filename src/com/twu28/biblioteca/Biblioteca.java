@@ -6,34 +6,72 @@ public class Biblioteca {
     private final Output output;
     private final Input input;
     private ArrayList<Books> bookList;
+    private ArrayList<Movies> movieList;
 
     public Biblioteca(Output output, Input input) {
         this.output = output;
         this.input = input;
         this.bookList = new ArrayList<Books>();
+        this.movieList = new ArrayList<Movies>();
     }
 
-    public void addBooks(Books books1) {
-        bookList.add(books1);
+    public void addBooks(Books book) {
+        bookList.add(book);
+    }
+    public void addMovies(Movies movie) {
+        movieList.add(movie);
     }
 
     public void start() {
         welcomeUser();
         while (true) {
-            printMenu();
-            int input = this.input.read();
-            if (input == 0) {
+            if (promptLoop()) break;
+        }
+    }
+
+    private boolean promptLoop() {
+        printMenu();
+        int input = this.input.read();
+
+        switch (input) {
+            case 0: {
                 output.print("Bye!!!");
-                break;
-            } else if (input == 1) {
+                return true;
+            }
+            case 1: {
                 addBooks(new Books("Gone With the Wind"));
                 output.print("Gone With the Wind");
-            } else if (input == 2) {
+                return false;
+            }
+            case 2: {
                 selectBook();
-            } else if (input == 3) {
+                return false;
+            }
+            case 3: {
                 output.print("Please talk to librarian. Thank you!");
-            } else {
+                return false;
+            }
+            case 4: {
+                printMovies();
+                return false;
+            }
+            default:
                 output.print("Select a valid option");
+                return false;
+        }
+    }
+
+    private void printMovies() {
+        output.print("DISPLAYORDER: MoviesName, Director, Rating");
+        addMovies(new Movies("SholayRamesh", "Sippy", Rating.NOTYET));
+        addMovies(new Movies("Titanic", "Cameron", Rating.B));
+        for(int index = 0; index < movieList.size(); index++) {
+            if(movieList.get(index).getRating() == Rating.NOTYET) {
+                output.print(movieList.get(index).getName() + " "
+                        + movieList.get(index).getDirector() + " " + "N/A");
+            } else {
+                output.print(movieList.get(index).getName() + " "
+                        + movieList.get(index).getDirector() + " " + movieList.get(index).getRating().toString());
             }
         }
     }
@@ -57,9 +95,10 @@ public class Biblioteca {
 
     private void printMenu() {
         output.print("0. Exit");
-        output.print("1. View All Books.");
+        output.print("1. View All Books");
         output.print("2. Reserve Book");
         output.print("3. Check Library Number");
+        output.print("4. View ALl Movies");
     }
 
     private void welcomeUser() {
