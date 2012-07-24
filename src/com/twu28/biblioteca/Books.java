@@ -7,11 +7,15 @@ package com.twu28.biblioteca;
  * Time: 1:23 PM
  * To change this template use File | Settings | File Templates.
  */
+// TODO - remove template comments
+// TODO - introduce ISBN and use it to reserve book
+// TODO - introduce author name field and display it
 public class Books {
     private String name;
     private boolean isAvailable;
 
     public boolean isAvailable() {
+        // TODO - remove commented code
 //        if(name != null) {
 //            isAvailable = true;
 //        } else {

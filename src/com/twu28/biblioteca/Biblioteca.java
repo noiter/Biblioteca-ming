@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Biblioteca {
     private final Output output;
     private final Input input;
+    // TODO use interface List instead of ArrayList
     private ArrayList<Books> bookList;
     private ArrayList<Movies> movieList;
 
@@ -39,6 +40,7 @@ public class Biblioteca {
                 return true;
             }
             case 1: {
+                // TODO - have pre-intialized list of books passed to the contructor
                 addBooks(new Books("Gone With the Wind"));
                 output.print("Gone With the Wind");
                 return false;
@@ -61,6 +63,8 @@ public class Biblioteca {
         }
     }
 
+
+    // TODO - delegate printing of movies to Movie object
     private void printMovies() {
         output.print("DISPLAYORDER: MoviesName, Director, Rating");
         addMovies(new Movies("SholayRamesh", "Sippy", Rating.NOTYET));
@@ -76,6 +80,7 @@ public class Biblioteca {
         }
     }
 
+    // TODO - reserve book using ISBN instead of index
     private void selectBook() {
         int bookNum = this.input.read();
         if (isAvailable(bookNum)) {

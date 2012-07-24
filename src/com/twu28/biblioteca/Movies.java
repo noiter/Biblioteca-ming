@@ -7,6 +7,8 @@ package com.twu28.biblioteca;
  * Time: 3:46 PM
  * To change this template use File | Settings | File Templates.
  */
+// TODO - remove template comments
+
 public class Movies {
     private String name;
     private String director;

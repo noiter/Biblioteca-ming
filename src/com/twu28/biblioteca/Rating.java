@@ -7,6 +7,7 @@ package com.twu28.biblioteca;
  * Time: 4:00 PM
  * To change this template use File | Settings | File Templates.
  */
+// TODO - remove template comments
 public enum Rating {
     A,
     B,
