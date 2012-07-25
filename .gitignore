@@ -1,5 +1,6 @@
 *.class
 .idea
 out
-# delete and ignore .DS_Store files
+.DS_Store
+*.iml
 
