@@ -1,23 +1,25 @@
 package com.twu28.biblioteca;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Biblioteca {
     private final Output output;
     private final Input input;
-    private LinkedList<Book> bookList;
-    private LinkedList<Movie> movieList;
+    private LinkedList<Book> books;
+    private LinkedList<Movie> movies;
+    private LinkedList<User> users;
+    private boolean isLoggedIn = false;
 
     public Biblioteca(Output output, Input input, LinkedList<Book> books, LinkedList<Movie> movies) {
         this.output = output;
         this.input = input;
-        this.bookList = books;
-        this.movieList = movies;
+        this.books = books;
+        this.movies = movies;
+        this.users = new LinkedList<User>();
     }
 
-    public void addBooks(Book book) {
-        bookList.add(book);
+    protected void addBook(Book book) {
+        books.add(book);
     }
 
     public void start() {
@@ -40,10 +42,14 @@ public class Biblioteca {
                 return false;
             }
             case 2: {
-                selectBook();
+                if(isLoggedIn) {
+                    selectBook();
+                }
+                output.print("Sorry, but you need to login first!");
                 return false;
             }
             case 3: {
+                login();
                 output.print("Please talk to librarian. Thank you!");
                 return false;
             }
@@ -55,6 +61,32 @@ public class Biblioteca {
                 output.print("Select a valid option");
                 return false;
         }
+    }
+
+//    protected boolean isLoggedIn() {
+//        return isLoggedIn;
+//    }
+
+    private void login() {
+        users.add(new User("111-1112", "123456"));
+        users.add(new User("111-1113", "654321"));
+
+        String inputUserName = this.input.read();
+        String inputUserPwd = this.input.read();
+
+        if(verify(inputUserName, inputUserPwd)) {
+            this.isLoggedIn = true;
+            output.print("Thanks! Enjoy.");
+        }
+    }
+
+    private boolean verify(String userName, String userPwd) {
+        for(User user : users) {
+            if(user.getName() == userName && user.getPwd() == userPwd) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void printMenu() {
@@ -70,7 +102,7 @@ public class Biblioteca {
     }
 
     private void printBooks() {
-        for (Book book : bookList) {
+        for (Book book : books) {
             output.print(book.toString());
         }
     }
@@ -78,7 +110,7 @@ public class Biblioteca {
     private void printMovies() {
         output.print("DISPLAY: MoviesName - Director - Rating");
 
-        for (Movie movie : movieList) {
+        for (Movie movie : movies) {
             this.output.print(movie.toString());
         }
     }
@@ -107,7 +139,7 @@ public class Biblioteca {
     }
 
     private Book findByIsbn(String isbn) {
-        for (Book book : bookList) {
+        for (Book book : books) {
             if (book.getIsbn().equals(isbn)) {
                 return book;
             }
@@ -123,6 +155,8 @@ public class Biblioteca {
         LinkedList<Movie> movies = new LinkedList<Movie>();
         movies.add(new Movie("SholayRamesh", "Sippy", Rating.NOTYET));
         movies.add(new Movie("Titanic", "Cameron", Rating.B));
+
+
 
         new Biblioteca(new Output(), new Input(), books, movies).start();
     }

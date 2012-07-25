@@ -24,6 +24,7 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void shouldWelcomeCustomer() throws Exception {
+        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
 
         biblioteca.start();
 
@@ -64,7 +65,7 @@ public class BibliotecaTest {
     @Test(timeout = 1000)
     public void canSelectMenuToViewAllBooks() throws Exception {
         when(mockInput.read()).thenReturn("1").thenReturn("0");
-        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
+        biblioteca.addBook(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
         verify(mockOutput).print("001, TDD, Kent Beck");
@@ -77,8 +78,11 @@ public class BibliotecaTest {
         Book mockBook = mock(Book.class);
         when(mockBook.isAvailable()).thenReturn(true);
 
+//        Biblioteca mockBiblioteca = mock(Biblioteca.class);
+//        when(mockBiblioteca.isLoggedIn()).thenReturn(true);
+
         Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
-        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
+        biblioteca.addBook(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
         verify(mockOutput).print("Thank You! Enjoy the book.");
@@ -91,8 +95,11 @@ public class BibliotecaTest {
         Book mockBook = mock(Book.class);
         when(mockBook.isAvailable()).thenReturn(false);
 
+//        Biblioteca mockBiblioteca = mock(Biblioteca.class);
+//        when(mockBiblioteca.isLoggedIn()).thenReturn(true);
+
         Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
-        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
+        biblioteca.addBook(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
         verify(mockOutput).print("Sorry we don't have that book yet.");
@@ -100,7 +107,7 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void shouldNoticeWithPleaseTalkToLibrarian() throws Exception {
-        when(mockInput.read()).thenReturn("3", "0");
+        when(mockInput.read()).thenReturn("3").thenReturn("0");
 
         biblioteca.start();
 
