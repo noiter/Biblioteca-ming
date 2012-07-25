@@ -11,8 +11,8 @@ public class Input {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public int read() {
-        return Integer.parseInt(readInput());
+    public String read() {
+        return readInput();
     }
 
     public String readInput() {

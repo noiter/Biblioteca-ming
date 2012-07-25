@@ -3,6 +3,8 @@ package com.twu28.biblioteca;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.LinkedList;
+
 import static org.mockito.Mockito.*;
 
 
@@ -10,13 +12,14 @@ public class BibliotecaTest {
     private Biblioteca biblioteca;
     private Output mockOutput;
     private Input mockInput;
+    private LinkedList<Book> books;
 
     @Before
     public void setUp() throws Exception {
         mockOutput = mock(Output.class);
         mockInput = mock(Input.class);
-        biblioteca = new Biblioteca(mockOutput, mockInput);
-        when(mockInput.read()).thenReturn(0);
+        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        when(mockInput.read()).thenReturn("0");
     }
 
     @Test(timeout = 1000)
@@ -44,7 +47,7 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void shouldAskToSelectValidOption() throws Exception {
-        when(mockInput.read()).thenReturn(100).thenReturn(0);
+        when(mockInput.read()).thenReturn("100").thenReturn("0");
 
         biblioteca.start();
 
@@ -60,22 +63,22 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void canSelectMenuToViewAllBooks() throws Exception {
-        when(mockInput.read()).thenReturn(1).thenReturn(0);
-
+        when(mockInput.read()).thenReturn("1").thenReturn("0");
+        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
-        verify(mockOutput).print("Gone With the Wind");
+        verify(mockOutput).print("001, TDD, Kent Beck");
     }
 
     @Test(timeout = 1000)
     public void shouldSayEnjoyingTheBook() throws Exception {
-        when(mockInput.read()).thenReturn(2, 1).thenReturn(0);
+        when(mockInput.read()).thenReturn("2", "001").thenReturn("0");
 
-        Books mockBook = mock(Books.class);
+        Book mockBook = mock(Book.class);
         when(mockBook.isAvailable()).thenReturn(true);
 
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput);
-        biblioteca.addBooks(mockBook);
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
         verify(mockOutput).print("Thank You! Enjoy the book.");
@@ -83,8 +86,13 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void shouldSaySorryForNotHavingTheBook() throws Exception {
-        when(mockInput.read()).thenReturn(2, 2).thenReturn(0);
+        when(mockInput.read()).thenReturn("2", "003").thenReturn("0");
 
+        Book mockBook = mock(Book.class);
+        when(mockBook.isAvailable()).thenReturn(false);
+
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        biblioteca.addBooks(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
         verify(mockOutput).print("Sorry we don't have that book yet.");
@@ -92,34 +100,10 @@ public class BibliotecaTest {
 
     @Test(timeout = 1000)
     public void shouldNoticeWithPleaseTalkToLibrarian() throws Exception {
-        when(mockInput.read()).thenReturn(3, 0);
+        when(mockInput.read()).thenReturn("3", "0");
 
         biblioteca.start();
 
         verify(mockOutput).print("Please talk to librarian. Thank you!");
-    }
-
-    @Test(timeout = 1000)
-    public void shouldDisplayMenuOfViewingAllMovies() throws Exception {
-
-        biblioteca.start();
-
-        verify(mockOutput).print("4. View ALl Movies");
-    }
-
-    @Test(timeout = 1000)
-    public void canViewTheMovieSholayRamesh() throws Exception {
-        when(mockInput.read()).thenReturn(4).thenReturn(0);
-
-        biblioteca.start();
-        verify(mockOutput).print("SholayRamesh Sippy N/A");
-    }
-
-    @Test
-    public void canViewTheMovieTitanic() throws Exception {
-        when(mockInput.read()).thenReturn(4).thenReturn(0);
-
-        biblioteca.start();
-        verify(mockOutput).print("Titanic Cameron B");
     }
 }

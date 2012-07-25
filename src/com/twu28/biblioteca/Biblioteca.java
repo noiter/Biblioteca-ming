@@ -1,26 +1,23 @@
 package com.twu28.biblioteca;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Biblioteca {
     private final Output output;
     private final Input input;
-    // TODO use interface List instead of ArrayList
-    private ArrayList<Books> bookList;
-    private ArrayList<Movies> movieList;
+    private LinkedList<Book> bookList;
+    private LinkedList<Movie> movieList;
 
-    public Biblioteca(Output output, Input input) {
+    public Biblioteca(Output output, Input input, LinkedList<Book> books, LinkedList<Movie> movies) {
         this.output = output;
         this.input = input;
-        this.bookList = new ArrayList<Books>();
-        this.movieList = new ArrayList<Movies>();
+        this.bookList = books;
+        this.movieList = movies;
     }
 
-    public void addBooks(Books book) {
+    public void addBooks(Book book) {
         bookList.add(book);
-    }
-    public void addMovies(Movies movie) {
-        movieList.add(movie);
     }
 
     public void start() {
@@ -32,17 +29,14 @@ public class Biblioteca {
 
     private boolean promptLoop() {
         printMenu();
-        int input = this.input.read();
-
+        int input = Integer.parseInt(this.input.read());
         switch (input) {
             case 0: {
                 output.print("Bye!!!");
                 return true;
             }
             case 1: {
-                // TODO - have pre-intialized list of books passed to the contructor
-                addBooks(new Books("Gone With the Wind"));
-                output.print("Gone With the Wind");
+                printBooks();
                 return false;
             }
             case 2: {
@@ -63,41 +57,6 @@ public class Biblioteca {
         }
     }
 
-
-    // TODO - delegate printing of movies to Movie object
-    private void printMovies() {
-        output.print("DISPLAYORDER: MoviesName, Director, Rating");
-        addMovies(new Movies("SholayRamesh", "Sippy", Rating.NOTYET));
-        addMovies(new Movies("Titanic", "Cameron", Rating.B));
-        for(int index = 0; index < movieList.size(); index++) {
-            if(movieList.get(index).getRating() == Rating.NOTYET) {
-                output.print(movieList.get(index).getName() + " "
-                        + movieList.get(index).getDirector() + " " + "N/A");
-            } else {
-                output.print(movieList.get(index).getName() + " "
-                        + movieList.get(index).getDirector() + " " + movieList.get(index).getRating().toString());
-            }
-        }
-    }
-
-    // TODO - reserve book using ISBN instead of index
-    private void selectBook() {
-        int bookNum = this.input.read();
-        if (isAvailable(bookNum)) {
-            output.print("Thank You! Enjoy the book.");
-        } else {
-            output.print("Sorry we don't have that book yet.");
-        }
-    }
-
-    private boolean isAvailable(int bookNum) {
-        return bookNum <= bookList.size() && bookList.get(bookNum - 1).isAvailable();
-    }
-
-    public static void main(String[] args) {
-        new Biblioteca(new Output(), new Input()).start();
-    }
-
     private void printMenu() {
         output.print("0. Exit");
         output.print("1. View All Books");
@@ -108,5 +67,63 @@ public class Biblioteca {
 
     private void welcomeUser() {
         output.print("Welcome User.");
+    }
+
+    private void printBooks() {
+        for (Book book : bookList) {
+            output.print(book.toString());
+        }
+    }
+
+    private void printMovies() {
+        output.print("DISPLAY: MoviesName - Director - Rating");
+
+        for (Movie movie : movieList) {
+            this.output.print(movie.toString());
+        }
+    }
+
+    private void selectBook() {
+        String isbn = this.input.read();
+
+        if (isAvailable(isbn)) {
+            Book book = findByIsbn(isbn);
+            book.setAvailable(false);
+            output.print("Thank You! Enjoy the book.");
+        } else {
+            output.print("Sorry we don't have that book yet.");
+        }
+    }
+
+    private boolean isAvailable(String isbn) {
+        Book book = findByIsbn(isbn);
+        if (book == null) {
+            return false;
+        }
+        if (book.isAvailable()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Book findByIsbn(String isbn) {
+        for (Book book : bookList) {
+            if (book.getIsbn().equals(isbn)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        LinkedList<Book> books = new LinkedList<Book>();
+        books.add(new Book("TDD", "Kent Beck", "001"));
+        books.add(new Book("Head First Java", "Kathy Sierra", "002"));
+
+        LinkedList<Movie> movies = new LinkedList<Movie>();
+        movies.add(new Movie("SholayRamesh", "Sippy", Rating.NOTYET));
+        movies.add(new Movie("Titanic", "Cameron", Rating.B));
+
+        new Biblioteca(new Output(), new Input(), books, movies).start();
     }
 }
