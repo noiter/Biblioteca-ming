@@ -10,16 +10,23 @@ public class Biblioteca {
     private LinkedList<User> users;
     private boolean isLoggedIn = false;
 
-    public Biblioteca(Output output, Input input, LinkedList<Book> books, LinkedList<Movie> movies) {
+    public Biblioteca(Output output, Input input, LinkedList<Book> books, LinkedList<Movie> movies, LinkedList<User> users) {
         this.output = output;
         this.input = input;
         this.books = books;
         this.movies = movies;
-        this.users = new LinkedList<User>();
+        this.users = users;
+    }
+
+    protected void setIsLoggedIn() {
+        this.isLoggedIn = true;
     }
 
     protected void addBook(Book book) {
         books.add(book);
+    }
+    protected void addUser(User user) {
+        users.add(user);
     }
 
     public void start() {
@@ -61,32 +68,6 @@ public class Biblioteca {
                 output.print("Select a valid option");
                 return false;
         }
-    }
-
-//    protected boolean isLoggedIn() {
-//        return isLoggedIn;
-//    }
-
-    private void login() {
-        users.add(new User("111-1112", "123456"));
-        users.add(new User("111-1113", "654321"));
-
-        String inputUserName = this.input.read();
-        String inputUserPwd = this.input.read();
-
-        if(verify(inputUserName, inputUserPwd)) {
-            this.isLoggedIn = true;
-            output.print("Thanks! Enjoy.");
-        }
-    }
-
-    private boolean verify(String userName, String userPwd) {
-        for(User user : users) {
-            if(user.getName() == userName && user.getPwd() == userPwd) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void printMenu() {
@@ -147,6 +128,34 @@ public class Biblioteca {
         return null;
     }
 
+    private void login() {
+        String inputUserName = this.input.read();
+        String inputUserPwd = this.input.read();
+
+        if(verify(inputUserName, inputUserPwd)) {
+            this.isLoggedIn = true;
+            output.print("Thanks! Enjoy.");
+        }
+    }
+
+    private boolean verify(String userName, String userPwd) {
+        for(User user : users) {
+            if(user.getName().equals(userName) && user.getPwd().equals(userPwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean valid(String userName, String userPwd) {
+        for(User user : users) {
+            if(user.getName().equals(userName) && user.getPwd().equals(userPwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         LinkedList<Book> books = new LinkedList<Book>();
         books.add(new Book("TDD", "Kent Beck", "001"));
@@ -156,8 +165,10 @@ public class Biblioteca {
         movies.add(new Movie("SholayRamesh", "Sippy", Rating.NOTYET));
         movies.add(new Movie("Titanic", "Cameron", Rating.B));
 
+        LinkedList<User> users = new LinkedList<User>();
+        users.add(new User("111-1112", "123456"));
+        users.add(new User("111-1113", "654321"));
 
-
-        new Biblioteca(new Output(), new Input(), books, movies).start();
+        new Biblioteca(new Output(), new Input(), books, movies, users).start();
     }
 }

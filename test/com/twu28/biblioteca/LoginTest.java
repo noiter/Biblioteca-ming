@@ -21,10 +21,8 @@ public class LoginTest {
     public void shouldDisplayUserLibraryNumber() {
         when(mockInput.read()).thenReturn("3", "111-1112", "123456").thenReturn("0");
 
-//        User mockUser = mock(User.class);
-//        when(mockUser.verify("")).thenReturn(true);
-
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
+        biblioteca.addUser(new User("111-1112", "123456"));
         biblioteca.start();
 
         verify(mockOutput).print("Thanks! Enjoy.");
@@ -34,10 +32,7 @@ public class LoginTest {
     public void shouldDisplayLoginFailed() {
         when(mockInput.read()).thenReturn("3", "111-1112", "654321").thenReturn("0");
 
-//        User mockUser = mock(User.class);
-//        when(mockUser.verify("")).thenReturn(true);
-
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
         biblioteca.start();
 
         verify(mockOutput).print("Please talk to librarian. Thank you!");
@@ -47,7 +42,7 @@ public class LoginTest {
     public void shouldHintWhenReservingBook() {
         when(mockInput.read()).thenReturn("2").thenReturn("0");
 
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
         biblioteca.start();
 
         verify(mockOutput).print("Sorry, but you need to login first!");

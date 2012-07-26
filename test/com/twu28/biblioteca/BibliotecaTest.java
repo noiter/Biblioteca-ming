@@ -12,19 +12,19 @@ public class BibliotecaTest {
     private Biblioteca biblioteca;
     private Output mockOutput;
     private Input mockInput;
-    private LinkedList<Book> books;
+//    private LinkedList<Book> books;
 
     @Before
     public void setUp() throws Exception {
         mockOutput = mock(Output.class);
         mockInput = mock(Input.class);
-        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
         when(mockInput.read()).thenReturn("0");
     }
 
     @Test(timeout = 1000)
     public void shouldWelcomeCustomer() throws Exception {
-        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
 
         biblioteca.start();
 
@@ -78,10 +78,8 @@ public class BibliotecaTest {
         Book mockBook = mock(Book.class);
         when(mockBook.isAvailable()).thenReturn(true);
 
-//        Biblioteca mockBiblioteca = mock(Biblioteca.class);
-//        when(mockBiblioteca.isLoggedIn()).thenReturn(true);
-
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
+        biblioteca.setIsLoggedIn();
         biblioteca.addBook(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 
@@ -95,10 +93,8 @@ public class BibliotecaTest {
         Book mockBook = mock(Book.class);
         when(mockBook.isAvailable()).thenReturn(false);
 
-//        Biblioteca mockBiblioteca = mock(Biblioteca.class);
-//        when(mockBiblioteca.isLoggedIn()).thenReturn(true);
-
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>());
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), new LinkedList<Movie>(), new LinkedList<User>());
+        biblioteca.setIsLoggedIn();
         biblioteca.addBook(new Book("TDD", "Kent Beck", "001"));
         biblioteca.start();
 

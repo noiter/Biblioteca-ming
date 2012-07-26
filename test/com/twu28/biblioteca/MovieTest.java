@@ -43,7 +43,7 @@ public class MovieTest {
     }
 
     private void execute() {
-        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), movies);
+        Biblioteca biblioteca = new Biblioteca(mockOutput, mockInput, new LinkedList<Book>(), movies, new LinkedList<User>());
         biblioteca.start();
     }
 }

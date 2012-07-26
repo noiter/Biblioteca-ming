@@ -1,5 +1,7 @@
 package com.twu28.biblioteca;
 
+import java.util.LinkedList;
+
 public class User {
     private String name;
     private String pwd;
